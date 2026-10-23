@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KUGEMA - Electoral Commission Portal</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter & Outfit -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            kugema: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              gold: '#f59e0b',
+              darkgold: '#d97706',
+              dark: '#0f172a',
+              card: '#1e293b'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom CSS Effects */
+    .glass-effect {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .hero-bg {
+      background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.18), transparent 45%),
+                  radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.12), transparent 45%),
+                  #0f172a;
+    }
+
+    .kugema-pattern {
+      background-image: radial-gradient(#10b981 0.75px, transparent 0.75px), radial-gradient(#f59e0b 0.75px, #0f172a 0.75px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      opacity: 0.08;
+    }
+
+    /* Print styling for candidate application slip */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printableSlip, #printableSlip * {
+        visibility: visible;
+      }
+      #printableSlip {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 28px;
+        background: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #059669;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #10b981;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-kugema-500 selection:text-white">
+
+  <!-- ================= TOP NOTIFICATION BAR ================= -->
+  <div class="bg-gradient-to-r from-kugema-900 via-kugema-700 to-amber-700 text-white text-xs font-medium py-2 px-4 text-center flex justify-center items-center gap-2 shadow-inner">
+    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+    <span><strong>KUGEMA Official Elections:</strong> Applications for Executive Leadership positions are now open! Submit early for vetting.</span>
+  </div>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 shadow-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo & Title -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-kugema-700 via-kugema-500 to-amber-400 p-0.5 shadow-lg shadow-kugema-900/50 flex items-center justify-center transform hover:scale-105 transition-transform">
+            <div class="w-full h-full bg-slate-900 rounded-[10px] flex items-center justify-center">
+              <i class="fa-solid fa-landmark text-amber-400 text-xl"></i>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-display font-extrabold text-2xl tracking-tight bg-gradient-to-r from-emerald-400 via-amber-300 to-white bg-clip-text text-transparent">
+                KUGEMA
+              </h1>
+              <span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">Elections</span>
+            </div>
+            <p class="text-[11px] text-slate-400 font-medium tracking-wide">Kenyatta University Gikuyu, Embu and Meru Students Association</p>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+          <a href="#positions" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+            <i class="fa-solid fa-layer-group text-xs text-emerald-500"></i> Executive Roles
+          </a>
+          <a href="#payments" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+            <i class="fa-solid fa-mobile-retro text-xs text-amber-500"></i> Fee Schedule & M-PESA
+          </a>
+          <a href="#guidelines" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+            <i class="fa-solid fa-file-contract text-xs text-blue-400"></i> Mandatory Submissions
+          </a>
+        </nav>
+
+        <!-- Right Side Actions -->
+        <div class="flex items-center space-x-3">
+          <button id="adminToggleBtn" onclick="promptAdminAccess()" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold transition flex items-center gap-2 shadow-sm">
+            <i class="fa-solid fa-lock text-amber-400"></i>
+            <span id="adminToggleText">EC Admin Login</span>
+          </button>
+          
+          <a href="#positions" class="hidden sm:inline-flex px-4 py-2 rounded-lg bg-gradient-to-r from-kugema-600 to-kugema-500 hover:from-kugema-500 hover:to-kugema-600 text-white font-semibold text-xs tracking-wide shadow-md shadow-kugema-900/40 hover:shadow-kugema-600/30 transition transform hover:-translate-y-0.5">
+            Apply Now <i class="fa-solid fa-arrow-right ml-1.5 my-auto"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    
+    <!-- ================= HERO SECTION ================= -->
+    <section class="relative hero-bg overflow-hidden py-16 md:py-20 border-b border-slate-800">
+      <div class="absolute inset-0 kugema-pattern pointer-events-none"></div>
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          
+          <!-- Hero Text -->
+          <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+              <i class="fa-solid fa-scale-balanced"></i> Official KUGEMA Electoral Portal
+            </div>
+            
+            <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight">
+              Kenyatta University Gikuyu, Embu and Meru Students Association
+              <span class="block mt-2 bg-gradient-to-r from-emerald-400 via-amber-300 to-emerald-200 bg-clip-text text-transparent">
+                Leadership Application Portal
+              </span>
+            </h1>
+            
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
+              Contest for leadership positions within KUGEMA. Submit your candidate credentials, pay application fees via M-PESA Pochi La Biashara, and generate your official clearance slip.
+            </p>
+
+            <div class="pt-2 flex flex-wrap gap-4 justify-center lg:justify-start">
+              <a href="#positions" class="px-6 py-3 rounded-xl bg-gradient-to-r from-kugema-600 via-kugema-500 to-amber-500 hover:from-kugema-500 hover:to-amber-600 text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg shadow-kugema-600/30 hover:scale-[1.02] transition">
+                <i class="fa-solid fa-paper-plane mr-2"></i> Select Position & Apply
+              </a>
+              <a href="#payments" class="px-6 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-xs sm:text-sm hover:border-slate-600 transition">
+                <i class="fa-solid fa-receipt mr-2 text-amber-400"></i> View Fee Structure
+              </a>
+            </div>
+
+          </div>
+
+          <!-- M-PESA Information Banner Card -->
+          <div class="lg:col-span-5">
+            <div class="glass-effect rounded-2xl p-6 sm:p-7 shadow-2xl border border-slate-700/60 relative overflow-hidden space-y-5">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-lg">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-display font-bold text-white text-sm">Official Payment Channel</h3>
+                    <p class="text-[11px] text-slate-400">M-PESA Pochi La Biashara</p>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold rounded-full uppercase">Instant Clearance</span>
+              </div>
+
+              <!-- Payment Box -->
+              <div class="bg-slate-950/90 border border-emerald-500/30 rounded-xl p-4 text-center space-y-1">
+                <p class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">M-PESA Pochi Number</p>
+                <p class="font-mono text-2xl font-extrabold text-amber-400 tracking-wider">0115109334</p>
+                <p class="text-[11px] text-emerald-400 font-semibold pt-1"><i class="fa-solid fa-circle-check"></i> Kenyatta University KUGEMA Elections</p>
+              </div>
+
+              <!-- Fee Breakdown List -->
+              <div class="space-y-2 text-xs text-slate-300">
+                <div class="flex justify-between items-center bg-slate-900/60 px-3 py-2 rounded-lg border border-slate-800">
+                  <span class="text-slate-300 font-medium">Chairman Position:</span>
+                  <span class="font-bold text-amber-400 font-mono">Ksh 1,000</span>
+                </div>
+                <div class="flex justify-between items-center bg-slate-900/60 px-3 py-2 rounded-lg border border-slate-800">
+                  <span class="text-slate-300 font-medium">Treasurer & Secretary General:</span>
+                  <span class="font-bold text-amber-400 font-mono">Ksh 500</span>
+                </div>
+                <div class="flex justify-between items-center bg-slate-900/60 px-3 py-2 rounded-lg border border-slate-800">
+                  <span class="text-slate-300 font-medium">All Other Positions:</span>
+                  <span class="font-bold text-amber-400 font-mono">Ksh 200</span>
+                </div>
+              </div>
+
+              <p class="text-[10px] text-slate-400 text-center italic">
+                * Complete your payment before submitting application form. M-PESA Code is required.
+              </p>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= POSITIONS SECTION ================= -->
+    <section id="positions" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 uppercase tracking-widest mb-1.5">
+            <i class="fa-solid fa-award"></i> Leadership Positions
+          </div>
+          <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white">
+            Available Executive Positions
+          </h2>
+          <p class="text-slate-400 text-xs sm:text-sm mt-1">Select any role to view statutory application fee and open candidate form.</p>
+        </div>
+
+        <!-- Search & Category Filter -->
+        <div class="flex flex-col sm:flex-row items-center gap-3">
+          <div class="relative w-full sm:w-64">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+            <input type="text" id="positionSearch" oninput="filterPositions()" placeholder="Search position name..." class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 focus:ring-2 focus:ring-kugema-500 focus:border-transparent outline-none">
+          </div>
+          <select id="categoryFilter" onchange="filterPositions()" class="w-full sm:w-auto py-2 px-3 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 focus:ring-2 focus:ring-kugema-500 outline-none">
+            <option value="ALL">All Categories</option>
+            <option value="EXECUTIVE">Executive Bureau</option>
+            <option value="SECRETARIAT">Secretariat & Admin</option>
+            <option value="AFFAIRS">Representation & Welfare</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Positions Grid -->
+      <div id="positionsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Dynamic Cards Inserted Here -->
+      </div>
+
+    </section>
+
+    <!-- ================= PAYMENTS & MPESA DETAILED SECTION ================= -->
+    <section id="payments" class="py-14 bg-slate-900/60 border-y border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <div class="lg:col-span-6 space-y-4">
+            <span class="text-amber-400 font-bold text-xs uppercase tracking-widest">Electoral Nomination Fees</span>
+            <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white">Payment via M-PESA Pochi La Biashara</h2>
+            <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+              In accordance with KUGEMA Electoral Commission guidelines, every candidate must fulfill the non-refundable nomination fee payment prior to form submission.
+            </p>
+
+            <div class="space-y-3 pt-2">
+              <div class="flex items-start gap-3 bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs flex-shrink-0">1</div>
+                <div>
+                  <h4 class="text-xs font-bold text-slate-200">Open M-PESA Menu or Safaricom App</h4>
+                  <p class="text-[11px] text-slate-400">Go to Lipa na M-PESA and select <strong>Pochi La Biashara</strong>.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3 bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs flex-shrink-0">2</div>
+                <div>
+                  <h4 class="text-xs font-bold text-slate-200">Enter Phone Number: <span class="font-mono text-amber-300">0115109334</span></h4>
+                  <p class="text-[11px] text-slate-400">Enter exact amount for chosen seat (Ksh 1000, Ksh 500, or Ksh 200).</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3 bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+                <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs flex-shrink-0">3</div>
+                <div>
+                  <h4 class="text-xs font-bold text-slate-200">Copy M-PESA Transaction Code</h4>
+                  <p class="text-[11px] text-slate-400">Paste the 10-character code (e.g., <span class="font-mono text-slate-300">RKS89X23QL</span>) into application form.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6">
+            <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+              <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-emerald-400"></i> Fee Schedule Summary
+              </h3>
+
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300">
+                  <thead class="bg-slate-900 text-slate-400 text-[11px] uppercase">
+                    <tr>
+                      <th class="p-3">Position</th>
+                      <th class="p-3 text-right">Fee (Ksh)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800">
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-200">Chairman</td>
+                      <td class="p-3 text-right font-mono font-bold text-amber-400">Ksh 1,000</td>
+                    </tr>
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-200">Treasurer</td>
+                      <td class="p-3 text-right font-mono font-bold text-amber-400">Ksh 500</td>
+                    </tr>
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-200">Secretary General (SG)</td>
+                      <td class="p-3 text-right font-mono font-bold text-amber-400">Ksh 500</td>
+                    </tr>
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-200">VC (Vice Chairman)</td>
+                      <td class="p-3 text-right font-mono font-bold text-amber-400">Ksh 200</td>
+                    </tr>
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-200">Secretary</td>
+                      <td class="p-3 text-right font-mono font-bold text-amber-400">Ksh 200</td>
+                    </tr>
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-200">Organising Secretary & Deputy</td>
+                      <td class="p-3 text-right font-mono font-bold text-amber-400">Ksh 200</td>
+                    </tr>
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-200">Publicity, Culture, Chief Whip, 1st Year Rep</td>
+                      <td class="p-3 text-right font-mono font-bold text-amber-400">Ksh 200</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= GUIDELINES & MANDATORY SUBMISSIONS ================= -->
+    <section id="guidelines" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto text-center mb-10">
+        <span class="text-amber-400 font-bold text-xs uppercase tracking-widest">Candidate Requirements</span>
+        <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white mt-1">Mandatory Submissions & Clearance</h2>
+        <p class="text-slate-400 text-xs sm:text-sm mt-2">
+          Candidates must complete all mandatory submission fields. Eligibility for every post will be verified against the KUGEMA Constitution.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div class="p-6 bg-slate-900 rounded-2xl border border-slate-800 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-id-badge"></i>
+          </div>
+          <h3 class="font-display font-bold text-base text-white">Student Identification Credentials</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Full official student name, Kenyatta University Registration Number, current academic year/semester, and functional contact information.
+          </p>
+        </div>
+
+        <div class="p-6 bg-slate-900 rounded-2xl border border-slate-800 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-image"></i>
+          </div>
+          <h3 class="font-display font-bold text-base text-white">Passport / Student ID Photo Upload</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Valid passport size photograph or student ID image upload for official candidate verification and returning officer records.
+          </p>
+        </div>
+
+        <div class="p-6 bg-slate-900 rounded-2xl border border-slate-800 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-receipt"></i>
+          </div>
+          <h3 class="font-display font-bold text-base text-white">M-PESA Payment Confirmation Code</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Valid 10-character M-PESA confirmation code sent after transferring fee to Pochi La Biashara number <strong>0115109334</strong>.
+          </p>
+        </div>
+
+        <div class="p-6 bg-slate-900 rounded-2xl border border-slate-800 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-book-bookmark"></i>
+          </div>
+          <h3 class="font-display font-bold text-base text-white">Constitutional Standing</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Eligibility will be strictly as stipulated in the KUGEMA Constitution. Unregistered or non-cleared applicants will be flagged by EC officers.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PRIVATE EC ADMIN DASHBOARD ================= -->
+    <section id="adminDashboard" class="hidden py-12 bg-slate-900 border-t border-amber-500/30">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 mb-8 border-b border-slate-800 gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold uppercase mb-1">
+              <i class="fa-solid fa-user-shield"></i> Electoral Commission Private Desk
+            </div>
+            <h2 class="font-display text-2xl font-extrabold text-white">Candidate Applications Management</h2>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button onclick="exportToCSV()" class="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs transition flex items-center gap-1.5 shadow">
+              <i class="fa-solid fa-file-csv"></i> Export CSV
+            </button>
+            <button onclick="lockAdminView()" class="px-3.5 py-2 rounded-lg bg-red-600/80 hover:bg-red-600 text-white text-xs font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-lock"></i> Lock Admin Desk
+            </button>
+          </div>
+        </div>
+
+        <!-- Admin Table Controls -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+          <div class="relative w-full sm:w-72">
+            <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+            <input type="text" id="adminSearch" oninput="renderAdminTable()" placeholder="Search applicant, reg no, or code..." class="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 outline-none focus:border-emerald-500">
+          </div>
+
+          <div class="flex items-center space-x-2 w-full sm:w-auto">
+            <label class="text-xs text-slate-400">Filter Status:</label>
+            <select id="adminStatusFilter" onchange="renderAdminTable()" class="bg-slate-950 text-xs text-slate-200 border border-slate-800 rounded-lg px-3 py-1.5 outline-none">
+              <option value="ALL">All Applications</option>
+              <option value="VERIFIED">Verified / Approved</option>
+              <option value="PENDING">Pending Vetting</option>
+              <option value="REJECTED">Rejected</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Applications Table -->
+        <div class="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950">
+          <table class="w-full text-left text-xs text-slate-300">
+            <thead class="bg-slate-900 text-slate-400 uppercase font-semibold border-b border-slate-800 text-[11px]">
+              <tr>
+                <th class="p-4">Applicant Name</th>
+                <th class="p-4">Reg No</th>
+                <th class="p-4">Position Contested</th>
+                <th class="p-4">Fee Paid</th>
+                <th class="p-4">M-PESA Code</th>
+                <th class="p-4">Status</th>
+                <th class="p-4 text-right">EC Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody" class="divide-y divide-slate-800/60">
+              <!-- JS Populated -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-950 border-t border-slate-900 text-slate-400 text-xs py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-xl bg-kugema-700 flex items-center justify-center text-amber-300 font-bold text-base shadow">
+            K
+          </div>
+          <div>
+            <p class="font-bold text-slate-200 text-sm">Kenyatta University Gikuyu, Embu and Meru Students Association</p>
+            <p class="text-[11px] text-slate-500">KUGEMA Electoral Commission • Kenyatta University Main Campus</p>
+          </div>
+        </div>
+
+        <div class="text-slate-500 text-[11px] text-center md:text-right">
+          <p>M-PESA Pochi La Biashara: <strong class="text-amber-400 font-mono">0115109334</strong></p>
+          <p>&copy; KUGEMA Electoral Commission. All Rights Reserved.</p>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= APPLICATION MODAL ================= -->
+  <div id="applyModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl my-8">
+      
+      <!-- Modal Header -->
+      <div class="bg-gradient-to-r from-slate-900 via-kugema-900 to-slate-900 p-5 border-b border-slate-800 flex justify-between items-center">
+        <div>
+          <span class="text-amber-400 text-[10px] uppercase font-extrabold tracking-widest">KUGEMA Nomination Form</span>
+          <h3 id="modalPositionTitle" class="font-display font-bold text-lg text-white">Apply for Executive Office</h3>
+        </div>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Form Body -->
+      <form id="candidateForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-5">
+        <input type="hidden" id="selectedPositionId">
+        <input type="hidden" id="selectedPositionFee">
+
+        <!-- Fee Highlight Banner -->
+        <div class="bg-slate-950 border border-amber-500/30 p-3.5 rounded-xl flex items-center justify-between">
+          <div>
+            <p class="text-[10px] text-slate-400 font-semibold uppercase">Nomination Fee Required</p>
+            <p id="modalFeeDisplay" class="font-mono text-xl font-extrabold text-amber-400">Ksh 0</p>
+          </div>
+          <div class="text-right">
+            <p class="text-[10px] text-slate-400">Pay M-PESA Pochi La Biashara</p>
+            <p class="font-mono text-xs text-emerald-400 font-bold">0115109334</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Full Name -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name (As on Student ID) *</label>
+            <input type="text" id="fullName" required placeholder="e.g. Kelvin Mwangi" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 focus:ring-1 focus:ring-kugema-500 outline-none">
+          </div>
+
+          <!-- Registration Number -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">KU Student Reg No. *</label>
+            <input type="text" id="regNo" required placeholder="e.g. E35/1234/2023" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 focus:ring-1 focus:ring-kugema-500 outline-none">
+          </div>
+
+          <!-- Phone Number -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp / Mobile Phone *</label>
+            <input type="tel" id="phone" required placeholder="e.g. 0712345678" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 focus:ring-1 focus:ring-kugema-500 outline-none">
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Student Email *</label>
+            <input type="email" id="email" required placeholder="e.g. mwangi.k@students.ku.ac.ke" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 focus:ring-1 focus:ring-kugema-500 outline-none">
+          </div>
+
+          <!-- Year / Semester -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Current Academic Year & Sem *</label>
+            <select id="yearOfStudy" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 focus:ring-1 focus:ring-kugema-500 outline-none">
+              <option value="">Select Year</option>
+              <option value="Year 1 Sem 1">Year 1 Sem 1</option>
+              <option value="Year 1 Sem 2">Year 1 Sem 2</option>
+              <option value="Year 2 Sem 1">Year 2 Sem 1</option>
+              <option value="Year 2 Sem 2">Year 2 Sem 2</option>
+              <option value="Year 3 Sem 1">Year 3 Sem 1</option>
+              <option value="Year 3 Sem 2">Year 3 Sem 2</option>
+              <option value="Year 4 Sem 1">Year 4 Sem 1</option>
+              <option value="Year 4 Sem 2">Year 4 Sem 2</option>
+            </select>
+          </div>
+
+          <!-- Department / School -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">School / Department *</label>
+            <input type="text" id="department" required placeholder="e.g. School of Education" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 focus:ring-1 focus:ring-kugema-500 outline-none">
+          </div>
+        </div>
+
+        <!-- M-PESA Code Input -->
+        <div class="bg-amber-500/10 border border-amber-500/20 p-3.5 rounded-xl space-y-2">
+          <label class="block text-xs font-bold text-amber-300">M-PESA Confirmation Code *</label>
+          <input type="text" id="mpesaCode" required maxlength="12" uppercase placeholder="e.g. RKX90123AB" class="w-full px-3 py-2 bg-slate-950 border border-amber-500/40 rounded-lg text-xs font-mono font-bold text-amber-300 uppercase tracking-widest outline-none focus:ring-1 focus:ring-amber-400">
+          <p class="text-[10px] text-slate-400">Enter the exact 10-character code received after sending fee to 0115109334.</p>
+        </div>
+
+        <!-- Photo URL / Avatar Upload -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Passport / Student ID Photo Link</label>
+          <input type="text" id="photoUrl" placeholder="Paste photo link (optional, default image will be generated)" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-300 outline-none focus:ring-1 focus:ring-emerald-500">
+        </div>
+
+        <!-- Eligibility Disclaimer -->
+        <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-[11px] text-slate-400 flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-emerald-400 text-sm flex-shrink-0"></i>
+          <span>Eligibility for all executive positions will be as stipulated in the KUGEMA Constitution.</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-800">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-medium text-xs hover:bg-slate-700 transition">Cancel</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-gradient-to-r from-kugema-600 to-amber-500 hover:from-kugema-500 hover:to-amber-600 text-white font-bold text-xs shadow-lg shadow-kugema-900/50 transition">
+            Submit Application & Clear
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= PRINTABLE APPLICATION SLIP MODAL ================= -->
+  <div id="receiptModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl my-8">
+      
+      <div id="printableSlip" class="p-8 space-y-5 bg-white text-slate-900">
+        
+        <!-- Header -->
+        <div class="text-center border-b border-slate-300 pb-4">
+          <div class="w-12 h-12 bg-emerald-800 text-amber-300 font-bold rounded-xl flex items-center justify-center mx-auto mb-2 text-xl shadow">
+            K
+          </div>
+          <h2 class="font-display font-extrabold text-base text-slate-900 uppercase tracking-tight">Kenyatta University Gikuyu, Embu and Meru Students Association</h2>
+          <p class="text-xs font-bold text-emerald-800 mt-0.5">KUGEMA ELECTORAL COMMISSION • APPLICATION SLIP</p>
+        </div>
+
+        <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-center">
+          <p class="text-xs text-emerald-800 font-bold"><i class="fa-solid fa-circle-check"></i> Application Submitted & Pending EC Clearance</p>
+          <p class="text-[10px] text-slate-600 mt-0.5">Slip Code: <span id="slipRefCode" class="font-mono text-slate-900 font-bold">KUGEMA-2026-000</span></p>
+        </div>
+
+        <div class="space-y-2 text-xs text-slate-800">
+          <div class="flex justify-between py-1 border-b border-slate-200">
+            <span class="text-slate-500">Applicant Name:</span>
+            <span id="slipName" class="font-bold text-slate-900">---</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-200">
+            <span class="text-slate-500">Reg Number:</span>
+            <span id="slipReg" class="font-mono font-bold text-slate-900">---</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-200">
+            <span class="text-slate-500">Position Contested:</span>
+            <span id="slipPosition" class="font-bold text-emerald-800">---</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-200">
+            <span class="text-slate-500">Nomination Fee Paid:</span>
+            <span id="slipFee" class="font-mono font-bold text-slate-900">---</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-200">
+            <span class="text-slate-500">M-PESA Ref Code:</span>
+            <span id="slipMpesa" class="font-mono font-bold text-amber-700">---</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-200">
+            <span class="text-slate-500">Academic Level:</span>
+            <span id="slipDept" class="text-slate-900">---</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-200">
+            <span class="text-slate-500">Submission Date:</span>
+            <span id="slipDate" class="text-slate-900">---</span>
+          </div>
+        </div>
+
+        <div class="text-[10px] text-slate-600 bg-slate-100 p-3 rounded-xl border border-slate-200">
+          <p class="font-bold text-slate-800 mb-0.5">Electoral Guidelines Note:</p>
+          <p>Eligibility will be as stipulated in the KUGEMA Constitution. Present this slip alongside your KU Student ID to the EC Returning Officer during physical clearance.</p>
+        </div>
+
+        <!-- Signature Lines -->
+        <div class="pt-4 flex justify-between items-end text-[10px] text-slate-600">
+          <div>
+            <p class="border-t border-slate-400 pt-1 w-28 text-center">Candidate Sign</p>
+          </div>
+          <div class="text-right">
+            <p class="border-t border-slate-400 pt-1 w-32 text-center">EC Returning Officer</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="bg-slate-950 p-4 border-t border-slate-800 flex justify-end space-x-3 no-print">
+        <button onclick="window.print()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs flex items-center gap-1.5">
+          <i class="fa-solid fa-print"></i> Print Application Slip
+        </button>
+        <button onclick="closeReceiptModal()" class="px-5 py-2 rounded-xl bg-kugema-600 hover:bg-kugema-500 text-white font-bold text-xs">
+          Done
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= EC ADMIN LOGIN MODAL ================= -->
+  <div id="adminAuthModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl p-6 space-y-4">
+      <div class="text-center">
+        <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl mx-auto mb-2 border border-amber-500/30">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3 class="font-display font-bold text-lg text-white">EC Admin Access</h3>
+        <p class="text-xs text-slate-400 mt-0.5">Restricted area for Electoral Commission officers</p>
+      </div>
+
+      <form onsubmit="handleAdminLogin(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Enter Admin Password</label>
+          <input type="password" id="adminPasswordInput" required placeholder="••••••••••••" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-100 outline-none focus:border-amber-500">
+        </div>
+
+        <p id="authErrorMsg" class="hidden text-[11px] text-red-400 text-center font-semibold"><i class="fa-solid fa-circle-exclamation mr-1"></i> Invalid Password!</p>
+
+        <div class="flex space-x-2 pt-2">
+          <button type="button" onclick="closeAdminAuthModal()" class="w-1/2 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold transition">Unlock</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // KUGEMA POSITIONS & ACCURATE FEE STRUCTURE
+    const positionsData = [
+      {
+        id: 'pos-1',
+        title: 'Chairman',
+        fee: 1000,
+        category: 'EXECUTIVE',
+        icon: 'fa-solid fa-user-tie',
+        badge: 'Top Executive'
+      },
+      {
+        id: 'pos-2',
+        title: 'VC (Vice Chairman)',
+        fee: 200,
+        category: 'EXECUTIVE',
+        icon: 'fa-solid fa-user-shield',
+        badge: 'Executive'
+      },
+      {
+        id: 'pos-3',
+        title: 'SG (Secretary General)',
+        fee: 500,
+        category: 'SECRETARIAT',
+        icon: 'fa-solid fa-file-pen',
+        badge: 'Secretariat Head'
+      },
+      {
+        id: 'pos-4',
+        title: 'Treasurer',
+        fee: 500,
+        category: 'EXECUTIVE',
+        icon: 'fa-solid fa-sack-dollar',
+        badge: 'Finance'
+      },
+      {
+        id: 'pos-5',
+        title: 'Secretary',
+        fee: 200,
+        category: 'SECRETARIAT',
+        icon: 'fa-solid fa-signature',
+        badge: 'Secretariat'
+      },
+      {
+        id: 'pos-6',
+        title: 'Organising Secretary',
+        fee: 200,
+        category: 'SECRETARIAT',
+        icon: 'fa-solid fa-calendar-days',
+        badge: 'Operations'
+      },
+      {
+        id: 'pos-7',
+        title: 'Deputy Organizing',
+        fee: 200,
+        category: 'SECRETARIAT',
+        icon: 'fa-solid fa-sliders',
+        badge: 'Operations'
+      },
+      {
+        id: 'pos-8',
+        title: 'Publicity Secretary',
+        fee: 200,
+        category: 'SECRETARIAT',
+        icon: 'fa-solid fa-bullhorn',
+        badge: 'Media & PR'
+      },
+      {
+        id: 'pos-9',
+        title: 'Culture Secretary',
+        fee: 200,
+        category: 'AFFAIRS',
+        icon: 'fa-solid fa-drum',
+        badge: 'Heritage'
+      },
+      {
+        id: 'pos-10',
+        title: 'Chief Whip',
+        fee: 200,
+        category: 'EXECUTIVE',
+        icon: 'fa-solid fa-gavel',
+        badge: 'Discipline'
+      },
+      {
+        id: 'pos-11',
+        title: "First Year's Rep",
+        fee: 200,
+        category: 'AFFAIRS',
+        icon: 'fa-solid fa-user-graduate',
+        badge: 'Freshers Voice'
+      }
+    ];
+
+    // LOCAL STORAGE PERSISTENCE SETUP
+    const STORAGE_KEY = 'KUGEMA_APPLICATIONS_STORE';
+    let candidatesStore = [];
+
+    function loadStore() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          candidatesStore = JSON.parse(saved);
+        } catch (e) {
+          candidatesStore = getInitialDefaultData();
+        }
+      } else {
+        candidatesStore = getInitialDefaultData();
+        saveStore();
+      }
+    }
+
+    function saveStore() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(candidatesStore));
+    }
+
+    function getInitialDefaultData() {
+      return [
+        {
+          id: 'app-2001',
+          fullName: 'Maina Denis Njuguna',
+          regNo: 'E35/3842/2023',
+          phone: '0712345678',
+          email: 'maina.d@students.ku.ac.ke',
+          positionId: 'pos-1',
+          positionTitle: 'Chairman',
+          fee: 1000,
+          mpesaCode: 'RKX90234LM',
+          yearOfStudy: 'Year 3 Sem 1',
+          department: 'School of Education',
+          photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
+          status: 'VERIFIED',
+          dateSubmitted: '2026-10-22'
+        },
+        {
+          id: 'app-2002',
+          fullName: 'Caroline Karimi Njeru',
+          regNo: 'C01/1109/2024',
+          phone: '0723456789',
+          email: 'karimi.c@students.ku.ac.ke',
+          positionId: 'pos-3',
+          positionTitle: 'SG (Secretary General)',
+          fee: 500,
+          mpesaCode: 'RKX91887AB',
+          yearOfStudy: 'Year 2 Sem 2',
+          department: 'School of Humanities',
+          photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+          status: 'PENDING',
+          dateSubmitted: '2026-10-23'
+        }
+      ];
+    }
+
+    // INIT PAGE
+    document.addEventListener('DOMContentLoaded', () => {
+      loadStore();
+      renderPositions();
+      renderAdminTable();
+    });
+
+    // 1. RENDER POSITION CARDS
+    function renderPositions() {
+      const grid = document.getElementById('positionsGrid');
+      grid.innerHTML = '';
+
+      const searchTerm = document.getElementById('positionSearch').value.toLowerCase();
+      const category = document.getElementById('categoryFilter').value;
+
+      const filtered = positionsData.filter(pos => {
+        const matchesSearch = pos.title.toLowerCase().includes(searchTerm);
+        const matchesCat = (category === 'ALL') || (pos.category === category);
+        return matchesSearch && matchesCat;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-500 bg-slate-900/50 rounded-2xl border border-slate-800">
+            <i class="fa-solid fa-folder-open text-3xl mb-2 text-slate-600"></i>
+            <p class="text-sm">No positions match your search.</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(pos => {
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-emerald-500/50 transition-all hover:shadow-xl hover:shadow-kugema-900/30 group";
+        
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700/80 text-emerald-400 flex items-center justify-center text-lg group-hover:bg-kugema-600 group-hover:text-white transition">
+                <i class="${pos.icon}"></i>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-[10px] font-bold uppercase tracking-wider">
+                ${pos.badge}
+              </span>
+            </div>
+
+            <h3 class="font-display font-bold text-lg text-white group-hover:text-amber-300 transition-colors">
+              ${pos.title}
+            </h3>
+
+            <!-- Standard Eligibility Clause as requested -->
+            <div class="mt-3 p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-[11px] text-slate-300 font-medium leading-relaxed flex items-start gap-2">
+              <i class="fa-solid fa-scroll text-amber-400 mt-0.5"></i>
+              <span>Eligibility will be as stipulated in the constitution</span>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
+            <div>
+              <p class="text-[10px] text-slate-400 uppercase font-semibold">Nomination Fee</p>
+              <p class="font-mono text-base font-extrabold text-amber-400">Ksh ${pos.fee.toLocaleString()}</p>
+            </div>
+            <button onclick="openApplyModal('${pos.id}')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-kugema-600 hover:text-white text-emerald-400 font-bold text-xs transition flex items-center gap-1.5">
+              Apply Now <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    function filterPositions() {
+      renderPositions();
+    }
+
+    // 2. MODAL & FORM LOGIC
+    function openApplyModal(posId) {
+      const pos = positionsData.find(p => p.id === posId);
+      if (!pos) return;
+
+      document.getElementById('selectedPositionId').value = pos.id;
+      document.getElementById('selectedPositionFee').value = pos.fee;
+      document.getElementById('modalPositionTitle').textContent = `Apply for ${pos.title}`;
+      document.getElementById('modalFeeDisplay').textContent = `Ksh ${pos.fee.toLocaleString()}`;
+      document.getElementById('candidateForm').reset();
+
+      document.getElementById('applyModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('applyModal').classList.add('hidden');
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+
+      const posId = document.getElementById('selectedPositionId').value;
+      const fee = parseInt(document.getElementById('selectedPositionFee').value);
+      const pos = positionsData.find(p => p.id === posId);
+
+      const fullName = document.getElementById('fullName').value.trim();
+      const regNo = document.getElementById('regNo').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const yearOfStudy = document.getElementById('yearOfStudy').value;
+      const department = document.getElementById('department').value.trim();
+      const mpesaCode = document.getElementById('mpesaCode').value.trim().toUpperCase();
+      let photoUrl = document.getElementById('photoUrl').value.trim();
+
+      if (!photoUrl) {
+        photoUrl = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200';
+      }
+
+      const newApp = {
+        id: 'app-' + Math.floor(2000 + Math.random() * 8000),
+        fullName,
+        regNo,
+        phone,
+        email,
+        positionId: pos.id,
+        positionTitle: pos.title,
+        fee,
+        mpesaCode,
+        yearOfStudy,
+        department,
+        photoUrl,
+        status: 'PENDING',
+        dateSubmitted: new Date().toISOString().split('T')[0]
+      };
+
+      candidatesStore.unshift(newApp);
+      saveStore();
+
+      closeModal();
+      showSlipReceipt(newApp);
+      renderAdminTable();
+    }
+
+    // 3. PRINTABLE SLIP RECEIPT
+    function showSlipReceipt(app) {
+      document.getElementById('slipRefCode').textContent = app.id.toUpperCase();
+      document.getElementById('slipName').textContent = app.fullName;
+      document.getElementById('slipReg').textContent = app.regNo;
+      document.getElementById('slipPosition').textContent = app.positionTitle;
+      document.getElementById('slipFee').textContent = `Ksh ${app.fee.toLocaleString()}`;
+      document.getElementById('slipMpesa').textContent = app.mpesaCode;
+      document.getElementById('slipDept').textContent = `${app.yearOfStudy} • ${app.department}`;
+      document.getElementById('slipDate').textContent = app.dateSubmitted;
+
+      document.getElementById('receiptModal').classList.remove('hidden');
+    }
+
+    function closeReceiptModal() {
+      document.getElementById('receiptModal').classList.add('hidden');
+    }
+
+    // 4. PRIVATE ADMIN SECURITY & CONTROLS
+    const ADMIN_PASSWORD_HASH = "2027@KUGEMA.8989";
+    let isAdminAuthenticated = false;
+
+    function promptAdminAccess() {
+      if (isAdminAuthenticated) {
+        toggleAdminDashboard(true);
+      } else {
+        document.getElementById('adminPasswordInput').value = '';
+        document.getElementById('authErrorMsg').classList.add('hidden');
+        document.getElementById('adminAuthModal').classList.remove('hidden');
+      }
+    }
+
+    function closeAdminAuthModal() {
+      document.getElementById('adminAuthModal').classList.add('hidden');
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const pwd = document.getElementById('adminPasswordInput').value;
+
+      if (pwd === ADMIN_PASSWORD_HASH) {
+        isAdminAuthenticated = true;
+        closeAdminAuthModal();
+        toggleAdminDashboard(true);
+      } else {
+        document.getElementById('authErrorMsg').classList.remove('hidden');
+      }
+    }
+
+    function toggleAdminDashboard(show) {
+      const adminSec = document.getElementById('adminDashboard');
+      const textSpan = document.getElementById('adminToggleText');
+
+      if (show) {
+        adminSec.classList.remove('hidden');
+        textSpan.textContent = 'EC Admin Panel (Active)';
+        adminSec.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        adminSec.classList.add('hidden');
+        textSpan.textContent = 'EC Admin Login';
+      }
+    }
+
+    function lockAdminView() {
+      isAdminAuthenticated = false;
+      toggleAdminDashboard(false);
+    }
+
+    function renderAdminTable() {
+      const tbody = document.getElementById('adminTableBody');
+      tbody.innerHTML = '';
+
+      const search = document.getElementById('adminSearch').value.toLowerCase();
+      const statusFilter = document.getElementById('adminStatusFilter').value;
+
+      const filtered = candidatesStore.filter(c => {
+        const matchesSearch = c.fullName.toLowerCase().includes(search) || 
+                              c.regNo.toLowerCase().includes(search) ||
+                              c.mpesaCode.toLowerCase().includes(search);
+        const matchesStatus = (statusFilter === 'ALL') || (c.status === statusFilter);
+        return matchesSearch && matchesStatus;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="p-8 text-center text-slate-500">
+              No matching applications found.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      filtered.forEach(c => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-900/80 transition";
+
+        let statusTag = '';
+        if (c.status === 'VERIFIED') {
+          statusTag = `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">VERIFIED</span>`;
+        } else if (c.status === 'REJECTED') {
+          statusTag = `<span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30 text-[10px] font-bold">REJECTED</span>`;
+        } else {
+          statusTag = `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold">PENDING</span>`;
+        }
+
+        tr.innerHTML = `
+          <td class="p-4 font-semibold text-slate-100 flex items-center space-x-2.5">
+            <img src="${c.photoUrl}" class="w-7 h-7 rounded-full object-cover bg-slate-800">
+            <span>${c.fullName}</span>
+          </td>
+          <td class="p-4 font-mono text-slate-300">${c.regNo}</td>
+          <td class="p-4 font-bold text-amber-400">${c.positionTitle}</td>
+          <td class="p-4 font-mono font-bold text-slate-200">Ksh ${c.fee}</td>
+          <td class="p-4 font-mono text-emerald-400 font-bold">${c.mpesaCode}</td>
+          <td class="p-4">${statusTag}</td>
+          <td class="p-4 text-right space-x-2">
+            ${c.status !== 'VERIFIED' ? `<button onclick="updateStatus('${c.id}', 'VERIFIED')" class="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px]">Approve</button>` : ''}
+            ${c.status !== 'REJECTED' ? `<button onclick="updateStatus('${c.id}', 'REJECTED')" class="px-2.5 py-1 rounded bg-red-600 hover:bg-red-500 text-white font-bold text-[10px]">Reject</button>` : ''}
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateStatus(id, newStatus) {
+      const candidate = candidatesStore.find(c => c.id === id);
+      if (candidate) {
+        candidate.status = newStatus;
+        saveStore();
+        renderAdminTable();
+      }
+    }
+
+    function exportToCSV() {
+      let csvContent = "data:text/csv;charset=utf-8,ID,Full Name,Reg Number,Position,Fee Paid,M-PESA Code,Year,Department,Phone,Email,Status,Date\n";
+
+      candidatesStore.forEach(c => {
+        const row = [
+          c.id,
+          `"${c.fullName}"`,
+          `"${c.regNo}"`,
+          `"${c.positionTitle}"`,
+          c.fee,
+          `"${c.mpesaCode}"`,
+          `"${c.yearOfStudy}"`,
+          `"${c.department}"`,
+          `"${c.phone}"`,
+          `"${c.email}"`,
+          c.status,
+          c.dateSubmitted
+        ].join(",");
+        csvContent += row + "\n";
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `KUGEMA_Elections_Applicants_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
